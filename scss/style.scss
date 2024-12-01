@@ -194,7 +194,7 @@ body.dark-theme {
     width: 100%;
     justify-content: space-between;
     align-items: stretch;
-    height: 38px;
+    height: 42px;
     gap: 16px;
     align-items: center;
     flex-wrap: wrap;
@@ -205,7 +205,6 @@ body.dark-theme {
         padding: 8px 10px;
         border-radius: 5px;
         flex: 1;
-        // height: 100%;
         background-color: var(--background-color);
         color: var(--search-icon);
         transition: background-color var(--transition-speed), color var(--transition-speed);
@@ -237,10 +236,8 @@ body.dark-theme {
         border: 1px solid var(--button-bg);
         border-radius: 5px;
         padding: 5px 10px;
-        // height: 100%;
         font-size: 18px;
         font-weight: 500;
-        line-height: 18px;
         color: var(--button-text);
         cursor: pointer;
 
