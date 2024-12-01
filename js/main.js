@@ -1,4 +1,3 @@
-// DOM-элементы
 const body = document.querySelector('body');
 
 const container = document.querySelector('.container');
@@ -10,7 +9,6 @@ const counterTasks = document.querySelector('.counter');
 let tasks = [];
 
 let removedTask = [];
-
 
 const theme = document.querySelector('.tasks-control__theme');
 const iconTheme = theme.querySelector('img');
@@ -45,17 +43,17 @@ function changeTheme() {
 
     body.classList.toggle('dark-theme');
 
-    const themeLS = body.classList.contains('dark-theme') ? 'dark-theme' : '';
+    const themeLS = body.classList.contains('dark-theme') ? 'dark-theme' : 'light-theme';
 
     localStorage.setItem('theme', themeLS);
 }
 
 
-const btnOpenModal = document.querySelector('.open-add-todo-btn'); 
-btnOpenModal.addEventListener('click', (e) => renderTaskModal(e, 'addTaskModal'));
+const btnOpenAddTaskModal = document.querySelector('.open-add-todo-btn'); 
+btnOpenAddTaskModal.addEventListener('click', (e) => renderTaskModal(e, 'addTaskModal'));
 
-const btnOpenDeleteAll = document.querySelector('.open-delete-all-todo-btn');
-const chekboxToggle = btnOpenDeleteAll.querySelector('input');
+const btnOpenDeleteAllTasksModal = document.querySelector('.open-delete-all-todo-btn');
+const chekboxToggle = btnOpenDeleteAllTasksModal.querySelector('input');
 
 function renderTaskModal(e, typeModal) {
 
@@ -120,7 +118,7 @@ function renderTaskModal(e, typeModal) {
             }
         });
 
-        inputModal.addEventListener('input', (e) => {checkInputChange(btnApplyModal, inputModal)});
+        inputModal.addEventListener('input', (e) => checkInputChange(btnApplyModal, inputModal));
 
         btnApplyModal.addEventListener('click', () => applyTaskEdit(btnApplyModal, inputModal));
         
@@ -174,7 +172,6 @@ function deleteAllTasksModal () {
     document.querySelector('.modal').remove();
     body.classList.remove('no-scroll');
 
-    const chekboxToggle = btnOpenDeleteAll.querySelector('input');
     chekboxToggle.checked = !chekboxToggle.checked
 }
 
@@ -221,16 +218,17 @@ tasksList.addEventListener('click', taskListClickHandler);
 function taskListClickHandler (e) {
     const action = e.target.dataset.action;
 
-    if (action == 'edit') {
-        renderTaskModal(e, 'editTaskModal');
-    } else if (action == 'delete') {
-        deleteTask(e);
-    } else if (action == 'done') {
-        doneTask(e);
+    switch (action) {
+        case 'edit': renderTaskModal(e, 'editTaskModal')
+            break;
+        case 'delete': deleteTask(e);
+            break;
+        case 'done': doneTask(e);
+            break;
     }
 }
 
-btnOpenDeleteAll.addEventListener('change', (e) => {
+btnOpenDeleteAllTasksModal.addEventListener('change', (e) => {
     if (tasks.length === 0) {
         renderTaskModal(e, 'addTaskModal');
         return;
@@ -242,6 +240,8 @@ function deleteAllTasks() {
     const getCountDeleteTask = getFromLocalStorage('countDeleteTask');
 
     const countDeleteTask = getCountDeleteTask + tasks.length;
+
+    chekboxToggle.checked = !chekboxToggle.checked
 
     saveToLocalStorage('countDeleteTask', countDeleteTask);
 
@@ -334,6 +334,8 @@ function addTask(e, inputModal) {
     const getCountAddedTask = localStorage.getItem('countAddedTask');
 
     const countAddedTask = Number(getCountAddedTask) + 1;
+
+    chekboxToggle.checked = false;
 
     saveToLocalStorage('countAddedTask', countAddedTask);
 
@@ -473,7 +475,7 @@ function renderCounter() {
 
 function renderUndoDelete(id) {
 
-    const undoDeleteList = document.querySelector('.undo-delete-list');
+    const undoDeleteList = document.querySelector('.undo-delete-list-modal');
     const undoDelete = document.createElement('div');
     undoDelete.classList.add('undo-delete');
     undoDeleteList.insertAdjacentElement('beforeend', undoDelete);

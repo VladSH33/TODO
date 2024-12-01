@@ -115,7 +115,7 @@ body.dark-theme {
     }
 }
 
-.undo-delete-list {
+.undo-delete-list-modal {
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -142,7 +142,7 @@ body.dark-theme {
     }
 }
 
-.toggle{
+.delete-all-tasks-switch {
     display: flex;
     justify-content: center;
     width: 100%;
@@ -337,10 +337,10 @@ body.dark-theme {
         input:checked + .task__checkmark::after {
             content: '';
             position: absolute;
-            top: 2px;
-            left: 5px;
-            width: 4px;
-            height: 8px;
+            top: 20%;
+            left: 30%;
+            width: 20%;
+            height: 40%;
             border: solid white;
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
