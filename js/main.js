@@ -11,7 +11,6 @@ let tasks = [];
 
 let removedTask = [];
 
-
 const theme = document.querySelector('.tasks-control__theme');
 const iconTheme = theme.querySelector('img');
 
@@ -47,14 +46,17 @@ function changeTheme() {
 
     body.classList.toggle('dark-theme');
 
-    const themeLS = body.classList.contains('dark-theme') ? 'dark-theme' : '';
+    const themeLS = body.classList.contains('dark-theme') ? 'dark-theme' : 'light-theme';
 
     localStorage.setItem('theme', themeLS);
 }
 
 
-const btnOpenModal = document.querySelector('.modal__button--open');
-btnOpenModal.addEventListener('click', (e) => renderTaskModal(e, 'addTaskModal'));
+const btnOpenAddTaskModal = document.querySelector('.open-add-task-btn');
+btnOpenAddTaskModal.addEventListener('click', (e) => renderTaskModal(e, 'addTaskModal'));
+
+const btnOpenDeleteAll = document.querySelector('.open-delete-all-btn');
+const checkboxSwitch = btnOpenDeleteAll.querySelector('input')
 
 function renderTaskModal(e, typeModal) {
 
@@ -93,6 +95,7 @@ function renderTaskModal(e, typeModal) {
         if (!modalContent.contains(e.target)) {
             modal.remove()
             body.classList.remove('no-scroll');
+            checkboxSwitch.checked = false;
         }
     })
 
@@ -119,7 +122,7 @@ function renderTaskModal(e, typeModal) {
             }
         });
 
-        inputModal.addEventListener('input', (e) => {checkInputChange(btnApplyModal, inputModal)});
+        inputModal.addEventListener('input', (e) => checkInputChange(btnApplyModal, inputModal));
 
         btnApplyModal.addEventListener('click', () => applyTaskEdit(btnApplyModal, inputModal));
         
@@ -149,6 +152,7 @@ function checkInputChange(btnApplyModalEdit, inputModalEdit) {
 function deleteTaskModal() {
     document.querySelector('.modal').remove();
     body.classList.remove('no-scroll');
+    checkboxSwitch.checked = false;
 }
 
 function applyTaskEdit(btnApplyModalEdit, inputModalEdit) {
@@ -188,16 +192,17 @@ tasksList.addEventListener('click', taskListClickHandler);
 function taskListClickHandler (e) {
     const action = e.target.dataset.action;
 
-    if (action == 'edit') {
-        renderTaskModal(e, 'editTaskModal');
-    } else if (action == 'delete') {
-        deleteTask(e);
-    } else if (action == 'done') {
-        doneTask(e);
+    switch (action) {
+        case 'edit': renderTaskModal(e, 'editTaskModal');
+            brake;
+        case 'delete': deleteTask(e);
+            brake;
+        case 'done': doneTask(e);
+            brake;
     }
 }
 
-const btnOpenDeleteAll = document.querySelector('.modal__delete-all--open');
+
 btnOpenDeleteAll.addEventListener('change', (e) => {
     if (tasks.length === 0) {
         renderTaskModal(e, 'addTaskModal');
@@ -223,7 +228,7 @@ function deleteAllTasks() {
 }
 
 
-const selectFilterTasks = document.querySelector('#filterTasks');
+const selectFilterTasks = document.querySelector('.tasks-control__select');
 selectFilterTasks.addEventListener('change', searchTasks);
 
 function filterTasks() {
@@ -242,7 +247,7 @@ function filterTasks() {
 
 }
 
-const inputSearchTasks = document.querySelector('#inputSearchTasks');
+const inputSearchTasks = document.querySelector('.tasks-control__input');
 inputSearchTasks.addEventListener('input', searchTasks);
 
 function searchTasks() {
@@ -302,6 +307,8 @@ function addTask(e, inputModal) {
     const getCountAddedTask = localStorage.getItem('countAddedTask');
 
     const countAddedTask = Number(getCountAddedTask) + 1;
+
+    checkboxSwitch.checked = false;
 
     saveToLocalStorage('countAddedTask', countAddedTask);
 
@@ -441,7 +448,7 @@ function renderCounter() {
 
 function renderUndoDelete(id) {
 
-    const undoDeleteList = document.querySelector('#undoDeleteList');
+    const undoDeleteList = document.querySelector('.undo-delete-list-modal');
     const undoDelete = document.createElement('div');
     undoDelete.classList.add('undo-delete');
     undoDeleteList.insertAdjacentElement('beforeend', undoDelete);

@@ -115,7 +115,7 @@ body.dark-theme {
     }
 }
 
-.undo-delete-list {
+.undo-delete-list-modal {
     display: flex;
     flex-direction: column;
     position: fixed;
@@ -142,13 +142,13 @@ body.dark-theme {
     }
 }
 
-.toggle{
+.delete-all-tasks-switch {
     display: flex;
     justify-content: center;
     width: 100%;
     margin: 20px 0;
 
-    .modal__delete-all--open {
+    .open-delete-all-btn {
         display: inline-flex;
         align-items: center;
         cursor: pointer;
@@ -338,10 +338,10 @@ body.dark-theme {
         input:checked + .task__checkmark::after {
             content: '';
             position: absolute;
-            top: 3px;
-            left: 6px;
-            width: 4px;
-            height: 8px;
+            top: 20%; /* Относительно высоты родительского элемента */
+            left: 30%; /* Относительно ширины родительского элемента */
+            width: 20%; /* От ширины родительского элемента */
+            height: 40%; /* От высоты родительского элемента */
             border: solid white;
             border-width: 0 3px 3px 0;
             transform: rotate(45deg);
@@ -466,50 +466,6 @@ body.dark-theme {
             color: #777777;
             border: 1px solid #777777;
         }
-
-        &--open {
-            background-color: var(--button-bg);
-            color: var(--button-text);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 24px;
-            cursor: pointer;
-            box-shadow: 0 0 15px rgba(var(--button-bg), 0.4);
-            outline: none;
-            position: fixed;
-            right: 50px;
-            bottom: 50px;
-
-            &::before, &::after {
-                content: '';
-                position: absolute;
-                background-color: var(--button-text);
-                border-radius: 5px;
-            }
-
-            &::before {
-                width: 50%;
-                height: 3px;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-            &::after {
-                width: 3px;
-                height: 50%;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-            }
-
-            &:hover {
-                background-color: darken(#6C63FF, 5%);
-                box-shadow: inset 0 0 0 2px var(--button-bg);
-            }
-        }
     }
 
     &__title {
@@ -549,5 +505,49 @@ body.dark-theme {
 
     &.modal--open {
         display: flex;
+    }
+}
+
+.open-add-task-btn {
+    background-color: var(--button-bg);
+    color: var(--button-text);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(var(--button-bg), 0.4);
+    outline: none;
+    position: fixed;
+    right: 50px;
+    bottom: 50px;
+
+    &::before, &::after {
+        content: '';
+        position: absolute;
+        background-color: var(--button-text);
+        border-radius: 5px;
+    }
+
+    &::before {
+        width: 50%;
+        height: 3px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &::after {
+        width: 3px;
+        height: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+
+    &:hover {
+        background-color: darken(#6C63FF, 5%);
+        box-shadow: inset 0 0 0 2px var(--button-bg);
     }
 }
