@@ -36,8 +36,6 @@ renderCounter();
 
 checkEmptyList(tasks);
 
-
-
 function changeTheme() {
     if (iconTheme.src.includes('icons/dark.svg')) {
         iconTheme.src = 'icons/light.svg';
@@ -53,8 +51,11 @@ function changeTheme() {
 }
 
 
-const btnOpenModal = document.querySelector('.modal__button--open');
+const btnOpenModal = document.querySelector('.open-add-todo-btn'); 
 btnOpenModal.addEventListener('click', (e) => renderTaskModal(e, 'addTaskModal'));
+
+const btnOpenDeleteAll = document.querySelector('.open-delete-all-todo-btn');
+const chekboxToggle = btnOpenDeleteAll.querySelector('input');
 
 function renderTaskModal(e, typeModal) {
 
@@ -88,17 +89,6 @@ function renderTaskModal(e, typeModal) {
     container.insertAdjacentHTML('beforeend', modalHTML);
 
     const modal = document.querySelector('.modal')
-    modal.addEventListener('click', (e) => {
-        const modalContent = modal.querySelector('.modal__content')
-        if (!modalContent.contains(e.target)) {
-            modal.remove()
-            body.classList.remove('no-scroll');
-        }
-    })
-
-    const btnCloseModal = document.querySelector('.modal__button--cancel');
-    btnCloseModal.addEventListener('click', deleteTaskModal);
-
     const btnApplyModal = document.querySelector('.modal__button--apply');
     const inputModal = modal.querySelector('.modal__input');
 
@@ -110,6 +100,17 @@ function renderTaskModal(e, typeModal) {
         });
         
         btnApplyModal.addEventListener('click', (e) => addTask(e, inputModal));
+
+        const btnCloseModal = document.querySelector('.modal__button--cancel');
+        btnCloseModal.addEventListener('click', deleteTaskModal);
+
+        modal.addEventListener('click', (e) => {
+            const modalContent = modal.querySelector('.modal__content')
+            if (!modalContent.contains(e.target)) {
+                modal.remove()
+                body.classList.remove('no-scroll');
+            }
+        })
     }
 
     if (typeModal === 'editTaskModal') {
@@ -126,10 +127,34 @@ function renderTaskModal(e, typeModal) {
         editTask(e, inputModal, btnApplyModal)
 
         checkInputChange(btnApplyModal, inputModal)
+
+        const btnCloseModal = document.querySelector('.modal__button--cancel');
+        btnCloseModal.addEventListener('click', deleteTaskModal);
+
+        
+        modal.addEventListener('click', (e) => {
+            const modalContent = modal.querySelector('.modal__content')
+            if (!modalContent.contains(e.target)) {
+                modal.remove()
+                body.classList.remove('no-scroll');
+            }
+        })
     }
 
     if (typeModal === 'deleteAllTasksModal') {
         btnApplyModal.addEventListener('click', deleteAllTasks);
+
+        const btnCloseModal = document.querySelector('.modal__button--cancel');
+        btnCloseModal.addEventListener('click', deleteAllTasksModal);
+
+        modal.addEventListener('click', (e) => {
+            const modalContent = modal.querySelector('.modal__content')
+            if (!modalContent.contains(e.target)) {
+                modal.remove()
+                body.classList.remove('no-scroll');
+                chekboxToggle.checked = !chekboxToggle.checked
+            }
+        })
     }
 }
 
@@ -145,10 +170,18 @@ function checkInputChange(btnApplyModalEdit, inputModalEdit) {
     }
 }
 
+function deleteAllTasksModal () {
+    document.querySelector('.modal').remove();
+    body.classList.remove('no-scroll');
+
+    const chekboxToggle = btnOpenDeleteAll.querySelector('input');
+    chekboxToggle.checked = !chekboxToggle.checked
+}
 
 function deleteTaskModal() {
     document.querySelector('.modal').remove();
     body.classList.remove('no-scroll');
+
 }
 
 function applyTaskEdit(btnApplyModalEdit, inputModalEdit) {
@@ -197,7 +230,6 @@ function taskListClickHandler (e) {
     }
 }
 
-const btnOpenDeleteAll = document.querySelector('.modal__delete-all--open');
 btnOpenDeleteAll.addEventListener('change', (e) => {
     if (tasks.length === 0) {
         renderTaskModal(e, 'addTaskModal');
@@ -223,7 +255,7 @@ function deleteAllTasks() {
 }
 
 
-const selectFilterTasks = document.querySelector('#filterTasks');
+const selectFilterTasks = document.querySelector('.tasks-control__select');
 selectFilterTasks.addEventListener('change', searchTasks);
 
 function filterTasks() {
@@ -242,7 +274,7 @@ function filterTasks() {
 
 }
 
-const inputSearchTasks = document.querySelector('#inputSearchTasks');
+const inputSearchTasks = document.querySelector('.tasks-control__input');
 inputSearchTasks.addEventListener('input', searchTasks);
 
 function searchTasks() {
@@ -441,7 +473,7 @@ function renderCounter() {
 
 function renderUndoDelete(id) {
 
-    const undoDeleteList = document.querySelector('#undoDeleteList');
+    const undoDeleteList = document.querySelector('.undo-delete-list');
     const undoDelete = document.createElement('div');
     undoDelete.classList.add('undo-delete');
     undoDeleteList.insertAdjacentElement('beforeend', undoDelete);
